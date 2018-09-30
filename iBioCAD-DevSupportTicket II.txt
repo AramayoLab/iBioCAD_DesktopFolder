@@ -1,0 +1,49 @@
+
+Please include the line below in follow-up emails for this request.
+
+Follow-up: 684842016
+
+Hello Rudy,
+
+Thank you for contacting Apple Developer Technical Support (DTS). Our engineers have reviewed your request and have concluded that there is no supported way to achieve the desired functionality given the currently shipping system configurations.
+
+If you would like for Apple to consider adding support for such features in the future, please submit an enhancement request via the Bug Reporter tool at <https://developer.apple.com/bug-reporting/>.
+
+While a Technical Support Incident (TSI) was initially debited from your Apple Developer Program account for this request, we have assigned a replacement incident back to your account.
+
+Thank you for taking the time to file this report. We truly appreciate your help in discovering and isolating issues.
+
+Best Regards,
+
+Developer Technical Support 
+Apple Worldwide Developer Relations
+
+**********************************************************************************************
+THE INFORMATION CONTAINED IN THIS MESSAGE IS UNDER NON-DISCLOSURE
+**********************************************************************************************
+On February 12, 2018 at 11:28:33 AM GMT, orbitus@orbitusrobotics.com wrote:
+
+Name: Rudy Aramayo
+Person ID: 45040624
+E-mail: orbitus@orbitusrobotics.com
+Team Name: Rudy Aramayo
+Team ID: 975CAGD5EW
+Team Type: Individual
+
+PLATFORM AND VERSION
+OS X
+iOS and macOS using ARA quantum Framework
+
+DESCRIPTION OF PROBLEM
+I am making a chemical visualizer for macOS and iOS, if you search for a chemical name, CID, or a PDB you would be searching in the PubChem database or the RCSB protein databank respectively. My App parses these databanks and displays the molecule in AR or on OSX in a scenekit window. When I bind the atoms together, I use the SCNPhysicsBallSocketJoint with bodyA, anchorA, bodyB, anchorB...
+
+Electro statics in the physics engine are not exactly usable in this context the way you guys programmed it. Magnetic fields only make charged object spin if they are moving. Electric fields pull charged objects.
+
+
+I have only been able to get the + and - charged sphere objects to bind by adding velocity pulses in the physics loop to properly simulate the lorentz force between objects and then cutting off the force at a cutoff distance. This might be best served with radialGravityField but I couldn't get the set up correct. Adding an electric field to a charged sphere node object causes an explosion in the simulation, fields don't seem to be able to exclude the charged object's they are apart of, what is the proper way to simulate electrostatic attractive force with the Scenekit physics so I won't need to loop over objects? The end goal is to have the nucleic acid base pairs snap together, with the elastic energy of the ribose sugar backbone snapping together from the elastic stretch of it's current conformer data. The beauty is, just adding some atomic molecular coordinates in a rope like fashion to a piece of RNA causes the rope to snap together and quantum physics is made clear. For the first time in history we can fold RNA proper and on mobile ARKit. With that being said, I need electrostatic force in SceneKit but I also need to add a magnetic base pair stacking force that comes from the pi orbital systems stacking on the base pairs. They magnetically bind. What is the best way to do a radial gravity field to bind base pair pi orbital systems?
+
+STEPS TO REPRODUCE
+Not being able to reproduce proper electrostatics in the physics engine between charged objects and between non-polar pi orbital conjugate systems
+
+
+NAME AND APPLE ID OF APP

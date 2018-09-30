@@ -1,0 +1,69 @@
+
+Please include the line below in follow-up emails for this request.
+
+Follow-up: 684841875
+
+Hi Rudy,
+
+I am sorry for the delay getting back to you.  Looking at the question you have posed, I think it may be useful for you to investigate the usage of custom SCNPhysicsShapes in your simulations.  This will allow you to override the default physics shapes created by SceneKit so you can have better control over the interactions of your physics objects.   If you are seeing unexpected behavior in the physics behavior of your objects, perhaps it is because SceneKit is creating default physics objects for your geometries that do not match your expectations.  By default, SceneKit will create default approximations of your original objects, not necessairly optimized for your particular purposes.  Creating your own SCNPhysicsShapes provides you with a way to optimize your physics objects for better correctness in the context of your simulation.  
+
+Please see WWDC 2014 - Session 609: What's New in SceneKit (https://developer.apple.com/videos/play/wwdc2014/609/) at time offset 20:38 where this is mentioned.  They also show the code you would use for providing your own SCNPhysicsShape geometry.
+
+Your project sounds very impressive and very interesting, but I cannot help you write your code or spend time with you experimenting with the APIs.  My function here is to provide you with references and advice about what APIs you may wish to consider trying to order to achieve your goals. 
+
+I hope this information is helpful for you.  Thank you for contacting Apple DTS.
+
+Regards,
+
+John
+
+
+
+On February 12, 2018 at 11:26:08 AM GMT, orbitus@orbitusrobotics.com wrote:
+
+Name: Rudy Aramayo
+Person ID: 45040624
+E-mail: orbitus@orbitusrobotics.com
+Team Name: Rudy Aramayo
+Team ID: 975CAGD5EW
+Team Type: Individual
+
+PLATFORM AND VERSION
+iOS
+iOS or macOS will work, I will send you the new ARA Quantum framework that is a blazing 2.5mega bytes of super optimized swift code to display molecules/proteins in AR. You just need to recommend the proper usage of the physics joint to accomplish my rigid subnode structure to the regular scnnode so they swivel properly 
+
+I will send you some videos of the rna molecule snapping together so you can understand what I mean. I can also send you the video of the guanine base pair that is giving me trouble with the rigid substructure ball-socket to the other atom C5' - C4'
+
+DESCRIPTION OF PROBLEM
+I am making a chemical visualizer for macOS and iOS, if you search for a chemical name, CID, or a PDB you would be searching in the PubChem database or the RCSB protein databank respectively. My App parses these databanks and displays the molecule in AR or on OSX in a scenekit window. When I bind the atoms together, I use the SCNPhysicsBallSocketJoint with bodyA, anchorA, bodyB, anchorB...
+
+BUT, my anchor point is wrong, and the bindings don't behave the way I want them to. If you look at my code and run things, eventually you should be able to see that a string of single bonds works like a scenekit rope would be expected to. I can send video of the RNA molecule snapping together from the elasticity of this rope.
+Where my algorithm breaks down is that I can't get the Benzene like carbon loops to stay as rigid bonds. I have tried 2 things: 1 use hinge bond, 2 use subNode. My attempt to make the benzene rigid atoms led me to make an SCNNode to hold the benzene atoms and only making the physics body on the parent node, in hopes that the subnodes would automatically be part of the physics body (no physics body on the subnode). I can get the ball socket joint but the subnodes just pass through the other atoms which is not the correct behavior. The second issue is that binding the "rigidNode" to the other atoms needs me to set the anchor point on the "rigidNode" where the c4' atom is, instead I seem to have the wrong anchor point and can't seem to get the binding correct.
+
+1. Can you help me add 5 SCNSphereNodes to a parent node and make the parent node physics body from those 5 nodes? is that the right way to make 5 spheres into a rigid structure?
+targetScene.physicsWorld.addBehavior(singleBond(a:atom["O5'"]!, b:atom["C5'"]!, dist: 0.5, molecule:targetMolecule))
+                    
+                    let riboseSugar_rigidNode = multiAtomRigidNode(atoms:[atom["C4'"]!, atom["C3'"]!, atom["C2'"]!, atom["C1'"]!, atom["O4'"]!])
+                    targetMolecule.addChildNode(riboseSugar_rigidNode)
+                    
+                    targetScene.physicsWorld.addBehavior(singleBondToRigid(a:atom["C5'"]!, b:atom["C4'"]!, rigid:riboseSugar_rigidNode, dist: 0.5, molecule:targetMolecule))
+                    
+                 
+
+
+2. Can you help me bind the parent Node to the other atoms (C5' to the C4' of the ribose in a Guanine base pair specifically) because I am not getting the right anchor points
+//CRITICAL TEST POINT... what is the correct place to put the physics joint.... atom_a to atom_b.. b is on the edge at (x,0,0)
+        return SCNPhysicsBallSocketJoint(bodyA: sphereNode_a!.physicsBody!,
+                                         anchorA: SCNVector3Make(-dist * atomicVertexToARCorrectionFactor, 0, 0),
+                                         bodyB: rigid.physicsBody!,
+                                         anchorB: SCNVector3Make(-(sphereNode_b?.position.x)! + deltaToA_unit.x*dist*atomicVertexToARCorrectionFactor,
+                                                                 -(sphereNode_b?.position.y)! + deltaToA_unit.y*dist*atomicVertexToARCorrectionFactor,
+                                                                 -(sphereNode_b?.position.z)! + deltaToA_unit.z*dist*atomicVertexToARCorrectionFactor))
+                                         //anchorB: SCNVector3Make(dist * atomicVertexToARCorrectionFactor, 0, 0))
+
+
+STEPS TO REPRODUCE
+Using SCNPhysicsJoints and not being able to understand the documentation on the anchor point bindings
+
+
+NAME AND APPLE ID OF APP

@@ -1,0 +1,71 @@
+I know that this is the most convoluted piece of information to parse over a simple help request, but nobel laurate scientific work can never be less than such. You have helped me greatly simply by listenting and allowing me to reflect, I admire your courage to tackle the bredth of such a problem. Coding is a pleasure, I really enjoy this work... I have sent the project ready to test for iOS or OSX for your pleasure and enjoyment and as proof of how awesome the Frameworks have become! 
+
+That said, within this code, if you search for the 3rd category called "PDB" ( the search string "246D" for example) you will get coordinates for the atoms and you will see the usage I am performing for this funciton below. So what I am wondering regarding API usage is how this usage of the physics custom body is wrong:
+
+rigidNode.physicsBody = SCNPhysicsBody(type: .dynamic,
+                                              shape: SCNPhysicsShape(node: rigidNode,
+                                                                     options: [SCNPhysicsShape.Option.keepAsCompound: true]))
+        
+the rigid Node has subNodes created as such in the function below:
+
+It should technically give me the body with all 5 simple spheres right?
+
+
+Here is the function:
+
+
+
+    func multiAtomRigidNode(atoms:[ARA_PDBAtom]) -> SCNNode
+    {
+        let rigidNode = SCNNode()
+
+        let averagePosition:SCNVector3 = averagePos(atoms:atoms)
+        
+        for atom in atoms
+        {
+            var coord_scnVec:SCNVector3
+            coord_scnVec = SCNVector3Make(atom.atom_x - averagePosition.x, atom.atom_y - averagePosition.y, atom.atom_z - averagePosition.z)
+            
+            let sphere = SCNSphere(radius: ARACoreUtils.getAtomSize_vanderwalls(element: atom.element_int) * CGFloat(atomicVertexToARCorrectionFactor) )
+            
+            sphere.segmentCount = 4;
+            sphere.firstMaterial?.diffuse.contents = ARACoreUtils.getAtom_color(element:atom.element_int)
+            let sphereNode = SCNNode(geometry: sphere)
+            sphereNode.name = String(describing: atom_for_id(atom:atom) )
+            sphereNode.position = SCNVector3(x: coord_scnVec.x * atomicVertexToARCorrectionFactor,
+                                             y: coord_scnVec.y * atomicVertexToARCorrectionFactor,
+                                             z: coord_scnVec.z * atomicVertexToARCorrectionFactor)
+            print("created aid: " + atom_for_id(atom: atom))
+            rigidNode.addChildNode(sphereNode)
+        }
+        
+        rigidNode.position = averagePosition
+        rigidNode.physicsBody = SCNPhysicsBody(type: .dynamic,
+                                              shape: SCNPhysicsShape(node: rigidNode,
+                                                                     options: [SCNPhysicsShape.Option.keepAsCompound: true]))
+        
+        return rigidNode
+    }
+
+
+
+I was expecting to get a torus like physics body. Enlightened by your response, I have decided to add a torus shape for the physics body and that should behave as I need it to, I will test that and watch the entire wwdc video as well.
+
+
+
+
+
+my second question on API Usage is regarding 3d coordinates of a subnode on a node and then binding that with the SCNPHysicsBallSocketJoint:
+
+How do you use the anchor point properly? the initial orientation coordinates of nodeA and nodeB is throwing me off...
+
+return SCNPhysicsBallSocketJoint(bodyA: sphereNode_a!.physicsBody!,
+                                         anchorA: SCNVector3Make(-dist * atomicVertexToARCorrectionFactor, 0, 0),
+                                         bodyB: rigid.physicsBody!,
+                                         anchorB: SCNVector3Make(-(sphereNode_b?.position.x)! + 
+                                                                 deltaToA_unit.x*dist*atomicVertexToARCorrectionFactor,
+                                                                 -(sphereNode_b?.position.y)! + deltaToA_unit.y*dist*atomicVertexToARCorrectionFactor,
+                                                                 -(sphereNode_b?.position.z)! + deltaToA_unit.z*dist*atomicVertexToARCorrectionFactor))
+                                         //anchorB: SCNVector3Make(dist * atomicVertexToARCorrectionFactor, 0, 0))
+
+
